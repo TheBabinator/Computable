@@ -1,0 +1,15 @@
+{
+  "itemGroup.computable": "Computable",
+  "item.computable.transistor": "Transistor",
+  "item.computable.basic_chip": "Basic Chip",
+  "item.computable.clock": "Clock",
+  "item.computable.alu": "Arithmetic Logic Unit",
+  "item.computable.eeprom": "EEPROM",
+  "item.computable.basic_cpu": "Basic CPU",
+  "item.computable.basic_ram": "Basic RAM",
+  "item.computable.basic_drive": "Basic Drive",
+  "item.computable.analyser": "Analyser",
+  "block.computable.basic_computer_case": "Basic Computer Case",
+  "computable.address": "%s",
+  "computable.address.unset": "No Address Set"
+}
