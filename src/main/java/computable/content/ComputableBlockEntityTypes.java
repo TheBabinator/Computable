@@ -5,6 +5,8 @@ import computable.tiles.ComputerCaseBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -20,5 +22,13 @@ public class ComputableBlockEntityTypes {
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
+        eventBus.addListener(ComputableBlockEntityTypes::onRegisterCapabilitiesEvent);
+    }
+
+    private static void onRegisterCapabilitiesEvent(RegisterCapabilitiesEvent registerCapabilitiesEvent) {
+        registerCapabilitiesEvent.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                COMPUTER_CASE.get(),
+                (tile, side) -> tile.getNetworkMember().getNetwork().getNetworkEnergy());
     }
 }

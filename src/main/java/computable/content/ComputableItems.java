@@ -22,9 +22,9 @@ public class ComputableItems {
     public static final DeferredHolder<Item, Item> ALU = ITEMS.register("alu", ingredient());
 
     public static final DeferredHolder<Item, Item> EEPROM = ITEMS.register("eeprom", AddressibleItem::new);
-    public static final DeferredHolder<Item, Item> BASIC_CPU = ITEMS.register("basic_cpu", AddressibleItem::new);
-    public static final DeferredHolder<Item, Item> BASIC_RAM = ITEMS.register("basic_ram", AddressibleItem::new);
     public static final DeferredHolder<Item, Item> BASIC_DRIVE = ITEMS.register("basic_drive", AddressibleItem::new);
+    public static final DeferredHolder<Item, Item> BASIC_CPU = ITEMS.register("basic_cpu", ingredient());
+    public static final DeferredHolder<Item, Item> BASIC_RAM = ITEMS.register("basic_ram", ingredient());
     public static final DeferredHolder<Item, Item> ANALYSER = ITEMS.register("analyser", AnalyserItem::new);
 
     public static final DeferredHolder<Item, Item> BASIC_COMPUTER_CASE = ITEMS.register("basic_computer_case", block(ComputableBlocks.BASIC_COMPUTER_CASE));

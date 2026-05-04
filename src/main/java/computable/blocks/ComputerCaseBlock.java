@@ -1,6 +1,7 @@
 package computable.blocks;
 
 import com.mojang.serialization.MapCodec;
+import computable.network.NetworkMember;
 import computable.tiles.ComputerCaseBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -44,6 +45,9 @@ public class ComputerCaseBlock extends HorizontalDirectionalBlock implements Ent
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return EntityBlock.super.getTicker(level, state, blockEntityType);
+        if (level.isClientSide()) {
+            return null;
+        }
+        return ComputerCaseBlockEntity::ticker;
     }
 }
