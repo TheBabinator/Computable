@@ -1,6 +1,5 @@
 package computable.tiles;
 
-import computable.blocks.ComputerCaseBlock;
 import computable.content.ComputableBlockEntityTypes;
 import computable.network.NetworkMember;
 import net.minecraft.core.BlockPos;

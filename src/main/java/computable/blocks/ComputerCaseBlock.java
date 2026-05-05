@@ -1,10 +1,11 @@
 package computable.blocks;
 
 import com.mojang.serialization.MapCodec;
-import computable.network.NetworkMember;
+import computable.api.Inspectable;
 import computable.tiles.ComputerCaseBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +18,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
-public class ComputerCaseBlock extends HorizontalDirectionalBlock implements EntityBlock {
+import java.util.List;
+
+public class ComputerCaseBlock extends HorizontalDirectionalBlock implements EntityBlock, Inspectable {
     public ComputerCaseBlock(Properties properties) {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
@@ -49,5 +52,12 @@ public class ComputerCaseBlock extends HorizontalDirectionalBlock implements Ent
             return null;
         }
         return ComputerCaseBlockEntity::ticker;
+    }
+
+    @Override
+    public void inspect(Level level, BlockPos blockPos, List<Component> components) {
+        if (level.getBlockEntity(blockPos) instanceof ComputerCaseBlockEntity tile) {
+            tile.getNetworkMember().inspect(components);
+        }
     }
 }
