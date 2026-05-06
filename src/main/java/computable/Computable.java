@@ -17,6 +17,7 @@ public class Computable {
         ComputableBlockEntityTypes.register(eventBus);
         ComputableCreativeModeTabs.register(eventBus);
         ComputableDataComponentTypes.register(eventBus);
+        ComputableMenus.register(eventBus);
 
         eventBus.addListener(ComputableDataProviders::onGatherDataEvent);
 
