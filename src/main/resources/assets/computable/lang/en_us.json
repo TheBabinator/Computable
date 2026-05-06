@@ -6,10 +6,16 @@
   "item.computable.alu": "Arithmetic Logic Unit",
   "item.computable.eeprom": "EEPROM",
   "item.computable.basic_cpu": "Basic CPU",
+  "item.computable.motherboard": "Motherboard",
   "item.computable.basic_ram": "Basic RAM",
   "item.computable.basic_drive": "Basic Drive",
   "item.computable.analyser": "Analyser",
   "block.computable.basic_computer_case": "Basic Computer Case",
+  "menu.computable.motherboard": "Motherboard",
+  "computable.motherboard.memory": "Memory",
+  "computable.motherboard.drives": "Drives",
+  "computable.motherboard.eeprom": "EEPROM",
+  "computable.motherboard.cards": "Cards",
   "computable.address": "%s",
   "computable.address.unset": "No Address Set"
 }

@@ -3,8 +3,10 @@ package computable.content;
 import computable.Computable;
 import computable.items.AddressibleItem;
 import computable.items.AnalyserItem;
+import computable.items.MotherboardItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
@@ -23,6 +25,7 @@ public class ComputableItems {
 
     public static final DeferredHolder<Item, Item> EEPROM = ITEMS.register("eeprom", AddressibleItem::new);
     public static final DeferredHolder<Item, Item> BASIC_CPU = ITEMS.register("basic_cpu", AddressibleItem::new);
+    public static final DeferredHolder<Item, Item> MOTHERBOARD = ITEMS.register("motherboard", MotherboardItem::new);
     public static final DeferredHolder<Item, Item> BASIC_RAM = ITEMS.register("basic_ram", AddressibleItem::new);
     public static final DeferredHolder<Item, Item> BASIC_DRIVE = ITEMS.register("basic_drive", AddressibleItem::new);
     public static final DeferredHolder<Item, Item> ANALYSER = ITEMS.register("analyser", AnalyserItem::new);
