@@ -1,4 +1,4 @@
-package computable.client.renderers.tile;
+package computable.client.tiles;
 
 import com.mojang.blaze3d.vertex.*;
 import computable.tiles.ComputerCaseBlockEntity;

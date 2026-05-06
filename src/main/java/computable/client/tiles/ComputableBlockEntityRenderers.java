@@ -1,9 +1,12 @@
-package computable.client.renderers.tile;
+package computable.client.tiles;
 
 import computable.content.ComputableBlockEntityTypes;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
+@OnlyIn(Dist.CLIENT)
 public class ComputableBlockEntityRenderers {
     public static void register(IEventBus eventBus) {
         eventBus.addListener(ComputableBlockEntityRenderers::onRegisterRenderers);

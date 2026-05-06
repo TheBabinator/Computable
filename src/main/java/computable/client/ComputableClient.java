@@ -1,7 +1,8 @@
 package computable.client;
 
 import computable.Computable;
-import computable.client.renderers.tile.ComputableBlockEntityRenderers;
+import computable.client.gui.ComputableScreens;
+import computable.client.tiles.ComputableBlockEntityRenderers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 public class ComputableClient {
     public ComputableClient(IEventBus eventBus, ModContainer modContainer) {
         ComputableBlockEntityRenderers.register(eventBus);
+        ComputableScreens.register(eventBus);
 
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
