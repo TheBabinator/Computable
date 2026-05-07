@@ -13,6 +13,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ComputerSoundInstance extends AbstractTickableSoundInstance {
+    private float basePitch = 1f;
+    private float modulation = 0.02f;
+
     public ComputerSoundInstance(SoundEvent soundEvent, BlockPos blockPos) {
         super(soundEvent, SoundSource.BLOCKS, SoundInstance.createUnseededRandom());
         looping = true;
@@ -28,14 +31,19 @@ public class ComputerSoundInstance extends AbstractTickableSoundInstance {
         float range = !relative && attenuation != SoundInstance.Attenuation.NONE ? scaledVolume : Float.POSITIVE_INFINITY;
         WeighedSoundEvents soundEventAccessor = resolve(Minecraft.getInstance().getSoundManager());
         Minecraft.getInstance().gui.subtitleOverlay.onPlaySound(this, soundEventAccessor, range);
+        pitch = basePitch * (1 + (float) random.nextGaussian() * modulation);
     }
 
     void setVolume(float volume) {
         this.volume = volume;
     }
 
-    void setPitch(float pitch) {
-        this.pitch = pitch;
+    void setBasePitch(float basePitch) {
+        this.basePitch = basePitch;
+    }
+
+    public void setModulation(float modulation) {
+        this.modulation = modulation;
     }
 
     public void kill() {
