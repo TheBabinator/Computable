@@ -1,0 +1,20 @@
+{
+  "computer.idle_low": {
+    "subtitle": "subtitles.computer.idle_low",
+    "sounds": [
+      {
+        "name": "computable:computer/idle_low",
+        "attenuation_distance": 8
+      }
+    ]
+  },
+  "computer.idle_high": {
+    "subtitle": "subtitles.computer.idle_high",
+    "sounds": [
+      {
+        "name": "computable:computer/idle_high",
+        "attenuation_distance": 8
+      }
+    ]
+  }
+}

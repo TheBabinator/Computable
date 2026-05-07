@@ -19,5 +19,8 @@
   "computable.address": "%s",
   "computable.address.unset": "No Address Set",
   "computable.analyzer.network_energy": "Network Energy: %s/%s",
-  "computable.analyzer_header": " = [Analyzer] = "
+  "computable.analyzer_header": " = [Analyzer] = ",
+  "subtitles.computer.idle_low": "Computer fans whirring",
+  "subtitles.computer.idle_high": "Computer working hard",
+  "subtitles.computer.beep": "Computer beeping"
 }
