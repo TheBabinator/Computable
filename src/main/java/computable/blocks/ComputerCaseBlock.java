@@ -1,22 +1,24 @@
 package computable.blocks;
 
 import com.mojang.serialization.MapCodec;
+import computable.api.ComputableBlockEntity;
+import computable.api.ComputableEntityBlock;
+import computable.api.Inspectable;
 import computable.tiles.ComputerCaseBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
-public class ComputerCaseBlock extends HorizontalDirectionalBlock implements EntityBlock {
+import java.util.List;
+
+public class ComputerCaseBlock extends HorizontalDirectionalBlock implements ComputableEntityBlock, Inspectable {
     public ComputerCaseBlock(Properties properties) {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
@@ -38,12 +40,24 @@ public class ComputerCaseBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ComputerCaseBlockEntity(pos, state);
+    public ComputableBlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new ComputerCaseBlockEntity(blockPos, blockState);
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return EntityBlock.super.getTicker(level, state, blockEntityType);
+    public boolean tickServer() {
+        return true;
+    }
+
+    @Override
+    public boolean tickClient() {
+        return true;
+    }
+
+    @Override
+    public void inspect(Level level, BlockPos blockPos, List<Component> components) {
+        if (level.getBlockEntity(blockPos) instanceof ComputerCaseBlockEntity tile) {
+            tile.getNetworkMember().inspect(components);
+        }
     }
 }

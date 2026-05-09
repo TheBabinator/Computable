@@ -16,7 +16,7 @@ public class ComputableItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        for (DeferredHolder<Item, ? extends Item> entry : ComputableItems.ITEMS.getEntries()) {
+        for (DeferredHolder<Item, ?> entry : ComputableItems.ITEMS.getEntries()) {
             Item item = entry.get();
             if (item instanceof BlockItem blockItem) {
                 simpleBlockItem(blockItem.getBlock());

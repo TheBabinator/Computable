@@ -1,12 +1,16 @@
-package computable.gui;
+package computable.client.gui;
 
 import computable.Computable;
+import computable.gui.MotherboardMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class MotherboardScreen extends AbstractContainerScreen<MotherboardMenu> {
 
     private static final ResourceLocation MENU_SCREEN = ResourceLocation.fromNamespaceAndPath(Computable.ID, "textures/gui/motherboard.png");

@@ -9,7 +9,7 @@
   "item.computable.motherboard": "Motherboard",
   "item.computable.basic_ram": "Basic RAM",
   "item.computable.basic_drive": "Basic Drive",
-  "item.computable.analyser": "Analyser",
+  "item.computable.analyzer": "Analyzer",
   "block.computable.basic_computer_case": "Basic Computer Case",
   "menu.computable.motherboard": "Motherboard",
   "computable.motherboard.memory": "Memory",
@@ -17,5 +17,10 @@
   "computable.motherboard.eeprom": "EEPROM",
   "computable.motherboard.cards": "Cards",
   "computable.address": "%s",
-  "computable.address.unset": "No Address Set"
+  "computable.address.unset": "No Address Set",
+  "computable.analyzer.network_energy": "Network Energy: %s/%s",
+  "computable.analyzer_header": " = [Analyzer] = ",
+  "subtitles.computer.idle_low": "Computer whirrs idly",
+  "subtitles.computer.idle_high": "Computer fans spin up",
+  "subtitles.computer.beep": "Computer beeps"
 }
