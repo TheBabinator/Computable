@@ -6,10 +6,11 @@ import computable.items.AnalyserItem;
 import computable.items.MotherboardItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -43,4 +44,15 @@ public class ComputableItems {
     private static Supplier<Item> block(DeferredHolder<Block, ? extends Block> block) {
         return () -> new BlockItem(block.get(), new Item.Properties());
     }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent eventBus) {
+        eventBus.registerItem(Capabilities.ItemHandler.ITEM,
+                ((itemStack, context) -> {
+                    MotherboardItem item = (MotherboardItem) MOTHERBOARD.get();
+                    return item.createItemHandler(itemStack);
+                }),
+                MOTHERBOARD.get()
+                );
+    }
+
 }

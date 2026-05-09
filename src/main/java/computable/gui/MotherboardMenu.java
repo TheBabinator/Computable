@@ -41,13 +41,15 @@ public class MotherboardMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return null;
+        return ItemStack.EMPTY;
     }
+
 
     @Override
     public boolean stillValid(Player player) {
         return true;
     }
+
 
     private void addPlayerInventory(Inventory pPlayerInventory) {
         for (int i = 0; i < 3; i++) {
@@ -62,4 +64,5 @@ public class MotherboardMenu extends AbstractContainerMenu {
             addSlot(new Slot(pPlayerInventory, i, 8 + i * 18, 149+3));
         }
     }
+
 }

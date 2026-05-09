@@ -20,6 +20,7 @@ public class Computable {
         ComputableMenus.register(eventBus);
 
         eventBus.addListener(ComputableDataProviders::onGatherDataEvent);
+        eventBus.addListener(ComputableItems::registerCapabilities);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, ComputableConfig.SPEC);
     }

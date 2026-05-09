@@ -1,7 +1,7 @@
 package computable.content;
 
-import com.mojang.serialization.Codec;
 import computable.Computable;
+import computable.items.components.MotherboardContents;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +19,13 @@ public class ComputableDataComponentTypes {
                     .persistent(UUIDUtil.CODEC)
                     .networkSynchronized(UUIDUtil.STREAM_CODEC)
                     .build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<MotherboardContents>> MOTHERBOARD_CONTENTS = DATA_COMPONENT_TYPES.register("motherboard_contents",
+            () -> DataComponentType.<MotherboardContents>builder()
+                    .persistent(MotherboardContents.CODEC)
+                    .networkSynchronized(MotherboardContents.STREAM_CODEC)
+                    .build());
+
 
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
