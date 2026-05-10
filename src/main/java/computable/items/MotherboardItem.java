@@ -14,6 +14,7 @@ import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class MotherboardItem extends BundleItem {
 
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new SimpleMenuProvider(
-                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory),
+                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory, createItemHandler(itemstack)),
                     Component.translatable("menu.computable.motherboard")
             ));
 
@@ -54,12 +55,7 @@ public class MotherboardItem extends BundleItem {
         return new ItemHandler(itemStack);
     }
 
-    public static class ItemHandler implements IItemHandler {
-
-        public final ItemStack itemStack;
-        public ItemHandler(ItemStack itemStack) {
-            this.itemStack = itemStack;
-        }
+    public record ItemHandler(ItemStack itemStack) implements IItemHandlerModifiable {
 
         @Override
         public int getSlots() {
@@ -102,6 +98,15 @@ public class MotherboardItem extends BundleItem {
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return true;
+        }
+
+        @Override
+        public void setStackInSlot(int slot, ItemStack stack) {
+            MotherboardContents contents = itemStack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get());
+            assert contents != null;
+            ItemStack replacedItem = contents.getItemFromSlot(slot);
+            MotherboardContents newContents = contents.removeItem(replacedItem).addItem(stack);
+            itemStack.set(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get(), newContents);
         }
     }
 
