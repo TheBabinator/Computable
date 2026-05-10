@@ -24,7 +24,6 @@ public class Computable {
         ComputableNetworking.register(eventBus);
 
         eventBus.addListener(ComputableDataProviders::onGatherDataEvent);
-
         modContainer.registerConfig(ModConfig.Type.COMMON, ComputableConfig.SPEC);
     }
 }
