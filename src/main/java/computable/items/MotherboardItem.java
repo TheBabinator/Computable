@@ -3,7 +3,6 @@ package computable.items;
 import computable.content.ComputableDataComponentTypes;
 import computable.gui.MotherboardMenu;
 import computable.items.components.MotherboardContents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.SlotAccess;
@@ -13,13 +12,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import java.util.Objects;
 
 public class MotherboardItem extends BundleItem {
-
     public MotherboardItem() {
         super(new Properties().stacksTo(1).component(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get(), new MotherboardContents(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY)));
     }
@@ -36,17 +33,14 @@ public class MotherboardItem extends BundleItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack itemstack = player.getItemInHand(usedHand);
-
+        ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new SimpleMenuProvider(
-                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory, createItemHandler(itemstack)),
-                    Component.translatable("menu.computable.motherboard")
+                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory),
+                    getName(itemStack)
             ));
-
-
         }
-        return InteractionResultHolder.success(itemstack);
+        return InteractionResultHolder.success(itemStack);
     }
 
 

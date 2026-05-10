@@ -13,6 +13,7 @@ public class ComputableScreens {
     }
 
     public static void onRegisterMenuScreensEvent(RegisterMenuScreensEvent event) {
-        event.register(ComputableMenus.MOTHERBOARD_MENU.get(), MotherboardScreen::new);
+        event.register(ComputableMenus.MOTHERBOARD.get(), MotherboardScreen::new);
+        event.register(ComputableMenus.COMPUTER_CASE.get(), ComputerCaseScreen::new);
     }
 }

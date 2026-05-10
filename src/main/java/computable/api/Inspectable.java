@@ -7,5 +7,5 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public interface Inspectable {
-    void inspect(Level level, BlockPos blockPos, List<Component> components);
+    void inspect(List<Component> components);
 }

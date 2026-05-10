@@ -33,10 +33,11 @@ public class ComputableItems {
     
     public static final DeferredHolder<Item, Item> MOTHERBOARD = ITEMS.register("motherboard", MotherboardItem::new);
 
-    public static final DeferredHolder<Item, Item> BASIC_COMPUTER_CASE = ITEMS.register("basic_computer_case", block(ComputableBlocks.BASIC_COMPUTER_CASE));
+    public static final DeferredHolder<Item, Item> COMPUTER_CASE = ITEMS.register("computer_case", block(ComputableBlocks.COMPUTER_CASE));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
+        eventBus.addListener(ComputableItems::onRegisterCapabilitiesEvent);
     }
 
     private static Supplier<Item> ingredient() {
@@ -47,14 +48,13 @@ public class ComputableItems {
         return () -> new BlockItem(block.get(), new Item.Properties());
     }
 
-    public static void registerCapabilities(RegisterCapabilitiesEvent eventBus) {
+    public static void onRegisterCapabilitiesEvent(RegisterCapabilitiesEvent eventBus) {
         eventBus.registerItem(Capabilities.ItemHandler.ITEM,
                 ((itemStack, context) -> {
                     MotherboardItem item = (MotherboardItem) MOTHERBOARD.get();
                     return item.createItemHandler(itemStack);
                 }),
-                MOTHERBOARD.get()
-                );
+                MOTHERBOARD.get());
     }
 
 }

@@ -27,12 +27,12 @@ public class AnalyzerItem extends Item {
         }
         Level level = context.getLevel();
         BlockPos blockPos = context.getClickedPos();
-        if (level.getBlockState(blockPos).getBlock() instanceof Inspectable inspectable) {
+        if (level.getBlockEntity(blockPos) instanceof Inspectable inspectable) {
             if (level.isClientSide()) {
                 return InteractionResult.SUCCESS;
             }
             List<Component> components = new ArrayList<>();
-            inspectable.inspect(level, blockPos, components);
+            inspectable.inspect(components);
             MutableComponent message = Component.translatable("computable.analyzer_header");
             for (Component component : components) {
                 message.append("\n");
