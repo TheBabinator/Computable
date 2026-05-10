@@ -18,11 +18,11 @@ public class MotherboardMenu extends ComputableContainerMenu {
         // cpu
         this.addSlot(new SlotItemHandler(dataInventory, i, 80, 19));
         // memory
-        this.addSlot(new SlotItemHandler(dataInventory, ++i, 8, 44));
-        this.addSlot(new SlotItemHandler(dataInventory, ++i, 26, 44));
+        this.addSlot(new SlotItemHandler(dataInventory, ++i, 8, 43));
+        this.addSlot(new SlotItemHandler(dataInventory, ++i, 26, 43));
         // drives
-        this.addSlot(new SlotItemHandler(dataInventory, ++i, 134, 44));
-        this.addSlot(new SlotItemHandler(dataInventory, ++i, 152, 44));
+        this.addSlot(new SlotItemHandler(dataInventory, ++i, 134, 43));
+        this.addSlot(new SlotItemHandler(dataInventory, ++i, 152, 43));
         // cards
         this.addSlot(new SlotItemHandler(dataInventory, ++i, 8, 76));
         this.addSlot(new SlotItemHandler(dataInventory, ++i, 26, 76));
