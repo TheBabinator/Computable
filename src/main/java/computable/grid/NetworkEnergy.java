@@ -1,4 +1,4 @@
-package computable.network;
+package computable.grid;
 
 import net.neoforged.neoforge.energy.IEnergyStorage;
 

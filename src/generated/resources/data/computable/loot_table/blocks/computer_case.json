@@ -17,5 +17,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "computable:blocks/basic_computer_case"
+  "random_sequence": "computable:blocks/computer_case"
 }

@@ -1,6 +1,5 @@
 package computable.items;
 
-import computable.content.ComputableMenus;
 import computable.gui.MotherboardMenu;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.Level;
 
 public class MotherboardItem extends BundleItem {
-
     public MotherboardItem() {
         super(new Properties().stacksTo(1).component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY));
     }
@@ -35,16 +33,13 @@ public class MotherboardItem extends BundleItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack itemstack = player.getItemInHand(usedHand);
-
+        ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new SimpleMenuProvider(
                     (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory),
-                    Component.translatable("menu.computable.motherboard")
+                    getName(itemStack)
             ));
-
-
         }
-        return InteractionResultHolder.success(itemstack);
+        return InteractionResultHolder.success(itemStack);
     }
 }

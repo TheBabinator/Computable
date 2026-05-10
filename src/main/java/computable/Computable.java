@@ -3,6 +3,7 @@ package computable;
 import computable.content.*;
 import computable.datagen.ComputableDataProviders;
 import computable.content.ComputableSoundEvents;
+import computable.net.ComputableNetworking;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -20,6 +21,7 @@ public class Computable {
         ComputableDataComponentTypes.register(eventBus);
         ComputableMenus.register(eventBus);
         ComputableSoundEvents.register(eventBus);
+        ComputableNetworking.register(eventBus);
 
         eventBus.addListener(ComputableDataProviders::onGatherDataEvent);
 

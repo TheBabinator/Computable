@@ -17,7 +17,7 @@ public class ComputableBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ComputerCaseBlockEntity>> COMPUTER_CASE =
             BLOCK_ENTITY_TYPES.register("computer_case", () -> BlockEntityType.Builder.of(
                     ComputerCaseBlockEntity::new,
-                    ComputableBlocks.BASIC_COMPUTER_CASE.get()
+                    ComputableBlocks.COMPUTER_CASE.get()
             ).build(null));
 
     public static void register(IEventBus eventBus) {
