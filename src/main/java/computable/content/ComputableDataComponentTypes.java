@@ -1,6 +1,7 @@
 package computable.content;
 
 import computable.Computable;
+import computable.items.components.Hardware;
 import computable.items.components.MotherboardContents;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
@@ -24,6 +25,12 @@ public class ComputableDataComponentTypes {
             () -> DataComponentType.<MotherboardContents>builder()
                     .persistent(MotherboardContents.CODEC)
                     .networkSynchronized(MotherboardContents.STREAM_CODEC)
+                    .build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Hardware>> HARDWARE = DATA_COMPONENT_TYPES.register("hardware",
+            () -> DataComponentType.<Hardware>builder()
+                    .persistent(Hardware.CODEC)
+                    .networkSynchronized(Hardware.STREAM_CODEC)
                     .build());
 
 

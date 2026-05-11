@@ -3,7 +3,9 @@ package computable.content;
 import computable.Computable;
 import computable.items.AddressibleItem;
 import computable.items.AnalyzerItem;
+import computable.items.HardwareItem;
 import computable.items.MotherboardItem;
+import computable.items.components.Hardware;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -26,10 +28,10 @@ public class ComputableItems {
     
     public static final DeferredHolder<Item, Item> ANALYZER = ITEMS.register("analyzer", AnalyzerItem::new);
 
-    public static final DeferredHolder<Item, Item> BASIC_CPU = ITEMS.register("basic_cpu", ingredient());
-    public static final DeferredHolder<Item, Item> BASIC_RAM = ITEMS.register("basic_ram", ingredient());
-    public static final DeferredHolder<Item, Item> BASIC_DRIVE = ITEMS.register("basic_drive", AddressibleItem::new);
-    public static final DeferredHolder<Item, Item> EEPROM = ITEMS.register("eeprom", AddressibleItem::new);
+    public static final DeferredHolder<Item, Item> BASIC_CPU = ITEMS.register("basic_cpu", hardware(Hardware.CPU));
+    public static final DeferredHolder<Item, Item> BASIC_RAM = ITEMS.register("basic_ram", hardware(Hardware.MEMORY));
+    public static final DeferredHolder<Item, Item> BASIC_DRIVE = ITEMS.register("basic_drive", hardware(Hardware.DRIVE));
+    public static final DeferredHolder<Item, Item> EEPROM = ITEMS.register("eeprom", hardware(Hardware.EEPROM));
     
     public static final DeferredHolder<Item, Item> MOTHERBOARD = ITEMS.register("motherboard", MotherboardItem::new);
 
@@ -42,6 +44,9 @@ public class ComputableItems {
 
     private static Supplier<Item> ingredient() {
         return () -> new Item(new Item.Properties());
+    }
+    private static Supplier<Item> hardware(Hardware hardware) {
+        return () -> new HardwareItem(new Item.Properties(), hardware);
     }
 
     private static Supplier<Item> block(DeferredHolder<Block, ? extends Block> block) {
