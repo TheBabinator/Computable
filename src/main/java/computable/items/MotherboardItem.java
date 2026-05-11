@@ -36,7 +36,7 @@ public class MotherboardItem extends BundleItem {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
             serverPlayer.openMenu(new SimpleMenuProvider(
-                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory),
+                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory, createItemHandler(itemStack)),
                     getName(itemStack)
             ));
         }
@@ -66,7 +66,7 @@ public class MotherboardItem extends BundleItem {
             MotherboardContents contents = itemStack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get());
             if (!simulate) {
                 assert contents != null;
-                MotherboardContents newContents = contents.addItem(stack);
+                MotherboardContents newContents = contents.addItem(stack, slot);
                 itemStack.set(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS, newContents);
             }
             return stack.copyWithCount(stack.getCount() - 1);
@@ -78,7 +78,7 @@ public class MotherboardItem extends BundleItem {
             assert contents != null;
             ItemStack replacedItem = contents.getItemFromSlot(slot);
             if (!simulate) {
-                MotherboardContents newContents = contents.removeItem(replacedItem);
+                MotherboardContents newContents = contents.removeItem(slot);
                 itemStack.set(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get(), newContents);
             }
             return replacedItem;
@@ -91,15 +91,14 @@ public class MotherboardItem extends BundleItem {
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return true;
+            return Objects.requireNonNull(itemStack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get())).validateSlot(slot, stack);
         }
 
         @Override
         public void setStackInSlot(int slot, ItemStack stack) {
             MotherboardContents contents = itemStack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get());
             assert contents != null;
-            ItemStack replacedItem = contents.getItemFromSlot(slot);
-            MotherboardContents newContents = contents.removeItem(replacedItem).addItem(stack);
+            MotherboardContents newContents = contents.removeItem(slot).addItem(stack, slot);
             itemStack.set(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get(), newContents);
         }
     }

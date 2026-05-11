@@ -2,23 +2,27 @@ package computable.items.components;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import computable.Computable;
-import computable.content.ComputableItems;
+import computable.content.ComputableDataComponentTypes;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.List;
 
 public record MotherboardContents (
         ItemStack cpu,
-        ItemStack eeprom,
-        ItemStack drive0, ItemStack drive1,
         ItemStack ram0, ItemStack ram1,
-        ItemStack card0, ItemStack card1, ItemStack card2
+        ItemStack drive0, ItemStack drive1,
+        ItemStack card0, ItemStack card1, ItemStack card2,
+        ItemStack eeprom
 ) {
+
+
+    public MotherboardContents(List<ItemStack> itemList) {
+        this(itemList.getFirst(), itemList.get(1), itemList.get(2), itemList.get(3), itemList.get(4), itemList.get(5), itemList.get(6), itemList.get(7), itemList.get(8));
+    }
+
 
     public ItemStack getItemFromSlot(int slot) {
         switch (slot) {
@@ -53,43 +57,73 @@ public record MotherboardContents (
         return ItemStack.EMPTY;
     }
 
-    // temporary
-    public MotherboardContents addItem(ItemStack stack) {
-        List<ItemStack> replaced = new java.util.ArrayList<>(List.of());
-        if (stack.is(ComputableItems.BASIC_CPU)) {
-            replaced.addFirst(stack);
+    public boolean validateSlot(int slot, ItemStack stack) {
+        Hardware hardware = stack.get(ComputableDataComponentTypes.HARDWARE);
+        if (hardware == null) {
+            return false;
         }
-        if (stack.is(Items.AIR)) {
-            replaced.add(ItemStack.EMPTY);
+        switch (slot) {
+            case 0 -> {
+                if (hardware == Hardware.CPU) {
+                    return true;
+                }
+            }
+            case 1, 2 -> {
+                if (hardware == Hardware.MEMORY) {
+                    return true;
+                }
+            }
+            case 3, 4 -> {
+                if (hardware == Hardware.DRIVE) {
+                    return true;
+                }
+            }
+            case 5, 6, 7 -> {
+                if (hardware == Hardware.CARD) {
+                    return true;
+                }
+            }
+            case 8 -> {
+                if (hardware == Hardware.EEPROM) {
+                    return true;
+                }
+            }
         }
-        return new MotherboardContents(replaced.getFirst(), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
+        return false;
     }
 
     // temporary
-    public MotherboardContents removeItem(ItemStack stack) {
-        List<ItemStack> kept = new java.util.ArrayList<>(List.of(cpu, eeprom, drive0, drive1, ram0, ram1, card0, card1, card2));
-        if (stack.is(ComputableItems.BASIC_CPU)) {
-            kept.addFirst(ItemStack.EMPTY);
-        }
-        return new MotherboardContents(kept.getFirst(), kept.get(1), kept.get(2), kept.get(3), kept.get(4), kept.get(5), kept.get(6), kept.get(7), kept.get(8));
+    public MotherboardContents addItem(ItemStack stack, int slot) {
+        List<ItemStack> replaced = new java.util.ArrayList<>(List.of(cpu, ram0, ram1, drive0, drive1, card0, card1, card2, eeprom));
+        replaced.set(slot, stack);
+        return new MotherboardContents(replaced);
+    }
+
+    // temporary
+    public MotherboardContents removeItem(int slot) {
+        List<ItemStack> kept = new java.util.ArrayList<>(List.of(cpu, ram0, ram1, drive0, drive1, card0, card1, card2, eeprom));
+        kept.set(slot, ItemStack.EMPTY);
+        return new MotherboardContents(kept);
     }
 
 
     public static final Codec<MotherboardContents> CODEC =
             RecordCodecBuilder.create(instance -> instance.group(
                     ItemStack.OPTIONAL_CODEC.fieldOf("cpu").forGetter(MotherboardContents::cpu),
-                    ItemStack.OPTIONAL_CODEC.fieldOf("eeprom").forGetter(MotherboardContents::eeprom),
-
-                    ItemStack.OPTIONAL_CODEC.fieldOf("drive0").forGetter(MotherboardContents::drive0),
-                    ItemStack.OPTIONAL_CODEC.fieldOf("drive1").forGetter(MotherboardContents::drive1),
 
                     ItemStack.OPTIONAL_CODEC.fieldOf("ram0").forGetter(MotherboardContents::ram0),
                     ItemStack.OPTIONAL_CODEC.fieldOf("ram1").forGetter(MotherboardContents::ram1),
 
+                    ItemStack.OPTIONAL_CODEC.fieldOf("drive0").forGetter(MotherboardContents::drive0),
+                    ItemStack.OPTIONAL_CODEC.fieldOf("drive1").forGetter(MotherboardContents::drive1),
+
                     ItemStack.OPTIONAL_CODEC.fieldOf("card0").forGetter(MotherboardContents::card0),
                     ItemStack.OPTIONAL_CODEC.fieldOf("card1").forGetter(MotherboardContents::card1),
-                    ItemStack.OPTIONAL_CODEC.fieldOf("card2").forGetter(MotherboardContents::card2)
-            ).apply(instance, MotherboardContents::new));
+                    ItemStack.OPTIONAL_CODEC.fieldOf("card2").forGetter(MotherboardContents::card2),
+
+                    ItemStack.OPTIONAL_CODEC.fieldOf("eeprom").forGetter(MotherboardContents::eeprom)
+
+                    ).apply(instance, MotherboardContents::new));
 
     public static final StreamCodec<ByteBuf, MotherboardContents> STREAM_CODEC = new StreamCodec<>() {
         @Override
@@ -110,17 +144,18 @@ public record MotherboardContents (
         @Override
         public void encode(ByteBuf byteBuf, MotherboardContents motherboardContents) {
             ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.cpu());
-            ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.eeprom());
-
-            ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.drive0());
-            ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.drive1());
 
             ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.ram0());
             ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.ram1());
 
+            ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.drive0());
+            ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.drive1());
+
             ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.card0());
             ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.card1());
             ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.card2());
+
+            ItemStack.OPTIONAL_STREAM_CODEC.encode((RegistryFriendlyByteBuf) byteBuf, motherboardContents.eeprom());
         }
     };
 }
