@@ -4,13 +4,17 @@ import computable.content.ComputableDataComponentTypes;
 import computable.content.ComputableMenus;
 import computable.items.components.Hardware;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class MotherboardMenu extends ComputableContainerMenu {
+
+    final int motherboardSlot;
 
     public MotherboardMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, new ItemStackHandler(9), DataSlot.standalone());
@@ -19,6 +23,7 @@ public class MotherboardMenu extends ComputableContainerMenu {
     public MotherboardMenu(int containerId, Inventory inventory, IItemHandler dataInventory, DataSlot motherboardInvSlot) {
         super(ComputableMenus.MOTHERBOARD.get(), containerId, 9);
         addDataSlot(motherboardInvSlot);
+        motherboardSlot = motherboardInvSlot.get();
 
         int i = 0;
         // cpu
@@ -38,6 +43,23 @@ public class MotherboardMenu extends ComputableContainerMenu {
 
         addPlayerHotbar(inventory, 8, 167);
         addPlayerInventory(inventory, 8, 109);
+    }
+
+    @Override
+    protected void addPlayerHotbar(Inventory pPlayerInventory, int x, int y) {
+        for (int i = 0; i < 9; i++) {
+            if (i != motherboardSlot) {
+                addSlot(new Slot(pPlayerInventory, i, x + i * 18, y));
+            }
+            else {
+                addSlot(new Slot(pPlayerInventory, i, x + i * 18, y) {
+                    @Override
+                    public boolean mayPickup(Player player) {
+                        return false;
+                    }
+                });
+            }
+        }
     }
 
     static class MotherboardSlotItemHandler extends SlotItemHandler {
