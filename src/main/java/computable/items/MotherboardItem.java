@@ -8,6 +8,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
@@ -35,8 +36,10 @@ public class MotherboardItem extends BundleItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
+            DataSlot motherboardSlot = DataSlot.standalone();
+            motherboardSlot.set(serverPlayer.getInventory().selected);
             serverPlayer.openMenu(new SimpleMenuProvider(
-                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory, createItemHandler(itemStack)),
+                    (containerId, playerInventory, player1) -> new MotherboardMenu(containerId, playerInventory, createItemHandler(itemStack), motherboardSlot),
                     getName(itemStack)
             ));
         }

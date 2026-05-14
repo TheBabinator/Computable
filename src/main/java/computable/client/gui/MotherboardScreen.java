@@ -32,4 +32,9 @@ public class MotherboardScreen extends ComputableContainerScreen<MotherboardMenu
         guiGraphics.drawString(font, Component.translatable("computable.motherboard.memory"), 8, 31, 4210752, false);
         guiGraphics.drawString(font, Component.translatable("computable.motherboard.cards"), 8, 64, 4210752, false);
     }
+
+    @Override
+    protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+        super.renderTooltip(guiGraphics, x, y);
+    }
 }
