@@ -13,6 +13,7 @@ public class ComputableSoundEvents {
 
     public static final DeferredHolder<SoundEvent, SoundEvent> COMPUTER_IDLE_LOW = sound("computer.idle_low");
     public static final DeferredHolder<SoundEvent, SoundEvent> COMPUTER_IDLE_HIGH = sound("computer.idle_high");
+    public static final DeferredHolder<SoundEvent, SoundEvent> MOTHERBOARD_INSERT = sound("motherboard.insert");
 
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);

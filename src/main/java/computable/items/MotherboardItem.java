@@ -1,11 +1,13 @@
 package computable.items;
 
 import computable.content.ComputableDataComponentTypes;
+import computable.content.ComputableSoundEvents;
 import computable.gui.MotherboardMenu;
 import computable.items.components.Hardware;
 import computable.items.components.MotherboardContents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -38,6 +40,7 @@ public class MotherboardItem extends BundleItem {
                 int maxStackSize = handler.getSlotLimit(availableSlot);
                 handler.insertItem(availableSlot, other.copyWithCount(maxStackSize), false);
                 other.setCount(other.getCount() - maxStackSize);
+                playInsertSound(player);
                 return true;
             }
         }
@@ -60,12 +63,17 @@ public class MotherboardItem extends BundleItem {
                     int maxStackSize = handler.getSlotLimit(availableSlot);
                     handler.insertItem(availableSlot, other.copyWithCount(maxStackSize), false);
                     other.setCount(other.getCount() - maxStackSize);
+                    playInsertSound(player);
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    private void playInsertSound(Entity entity) {
+        entity.playSound(ComputableSoundEvents.MOTHERBOARD_INSERT.get(), 0.3F, 0.9F + entity.level().getRandom().nextFloat() * 0.15F);
     }
 
     @Override

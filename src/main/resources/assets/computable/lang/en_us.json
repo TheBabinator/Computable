@@ -21,5 +21,6 @@
   "computable.analyzer_header": " = [Analyzer] = ",
   "subtitles.computer.idle_low": "Computer whirrs idly",
   "subtitles.computer.idle_high": "Computer fans spin up",
-  "subtitles.computer.beep": "Computer beeps"
+  "subtitles.computer.beep": "Computer beeps",
+  "subtitles.motherboard.insert": "Hardware clicks into place"
 }

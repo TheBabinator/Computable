@@ -16,5 +16,15 @@
         "attenuation_distance": 8
       }
     ]
+  },
+
+  "motherboard.insert": {
+    "subtitle": "subtitles.motherboard.insert",
+    "sounds": [
+      {
+        "name": "computable:motherboard/insert",
+        "attenuation_distance": 4
+      }
+    ]
   }
 }
