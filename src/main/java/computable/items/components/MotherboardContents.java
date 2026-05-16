@@ -23,7 +23,6 @@ public record MotherboardContents (
         this(itemList.getFirst(), itemList.get(1), itemList.get(2), itemList.get(3), itemList.get(4), itemList.get(5), itemList.get(6), itemList.get(7), itemList.get(8));
     }
 
-
     public ItemStack getItemFromSlot(int slot) {
         switch (slot) {
             case 0 -> {
@@ -55,6 +54,17 @@ public record MotherboardContents (
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    public int findNextAvailableSlot(ItemStack stack) {
+        for (int i = 0; i <= 9; i++ ) {
+            if (validateSlot(i, stack)) {
+                if (getItemFromSlot(i) == ItemStack.EMPTY) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public boolean validateSlot(int slot, ItemStack stack) {

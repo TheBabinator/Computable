@@ -2,6 +2,7 @@ package computable.items;
 
 import computable.content.ComputableDataComponentTypes;
 import computable.gui.MotherboardMenu;
+import computable.items.components.Hardware;
 import computable.items.components.MotherboardContents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
@@ -18,12 +19,28 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import java.util.Objects;
 
 public class MotherboardItem extends BundleItem {
+
     public MotherboardItem() {
         super(new Properties().stacksTo(1).component(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get(), new MotherboardContents(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY)));
     }
 
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+        if (stack.getCount() != 1 || action != ClickAction.SECONDARY) {
+            return false;
+        }
+        MotherboardContents contents = stack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get());
+        Hardware hardware = other.get(ComputableDataComponentTypes.HARDWARE);
+        if (hardware != null && contents != null) {
+            int availableSlot = contents.findNextAvailableSlot(other);
+            if (availableSlot != -1) {
+                IItemHandlerModifiable handler = createItemHandler(stack);
+                int maxStackSize = handler.getSlotLimit(availableSlot);
+                handler.insertItem(availableSlot, other.copyWithCount(maxStackSize), false);
+                other.setCount(other.getCount() - maxStackSize);
+                return true;
+            }
+        }
         return false;
     }
 
