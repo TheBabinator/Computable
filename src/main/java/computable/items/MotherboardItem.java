@@ -46,6 +46,25 @@ public class MotherboardItem extends BundleItem {
 
     @Override
     public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+        if (stack.getCount() != 1 || action != ClickAction.SECONDARY) {
+            return false;
+        }
+        ItemStack other = slot.getItem();
+        if (!other.isEmpty()) {
+            MotherboardContents contents = stack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS);
+            Hardware hardware = other.get(ComputableDataComponentTypes.HARDWARE);
+            if (hardware != null && contents != null) {
+                int availableSlot = contents.findNextAvailableSlot(other);
+                if (availableSlot != -1) {
+                    IItemHandlerModifiable handler = createItemHandler(stack);
+                    int maxStackSize = handler.getSlotLimit(availableSlot);
+                    handler.insertItem(availableSlot, other.copyWithCount(maxStackSize), false);
+                    other.setCount(other.getCount() - maxStackSize);
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
