@@ -5,6 +5,7 @@ import computable.api.Inspectable;
 import computable.api.UpdateRequestable;
 import computable.client.sounds.ComputerSoundInstance;
 import computable.content.ComputableBlockEntityTypes;
+import computable.content.ComputableItems;
 import computable.content.ComputableSoundEvents;
 import computable.net.ComputableNetworking;
 import computable.net.ComputerCaseUpdate;
@@ -13,8 +14,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import java.util.List;
 
@@ -24,6 +28,8 @@ public class ComputerCaseBlockEntity extends ComputableBlockEntity implements In
     private ComputerSoundInstance idleHigh;
     private boolean running = false;
     private boolean light = true;
+    public final IItemHandlerModifiable itemHandler = new ItemHandler();
+
 
     public ComputerCaseBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ComputableBlockEntityTypes.COMPUTER_CASE.get(), blockPos, blockState);
@@ -113,4 +119,56 @@ public class ComputerCaseBlockEntity extends ComputableBlockEntity implements In
         }
         light = payload.light();
     }
+
+    public static class ItemHandler implements IItemHandlerModifiable {
+        ItemStack motherboardItem = ItemStack.EMPTY;
+
+        @Override
+        public int getSlots() {
+            return 1;
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            return motherboardItem;
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (!simulate) {
+                motherboardItem = stack;
+            }
+            if (motherboardItem.isEmpty()) {
+                return stack;
+            } else {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            ItemStack motherboardCopy = motherboardItem;
+            if (!simulate) {
+                motherboardItem = ItemStack.EMPTY;
+            }
+            return motherboardCopy;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack.is(ComputableItems.MOTHERBOARD);
+        }
+
+        @Override
+        public void setStackInSlot(int slot, ItemStack stack) {
+            motherboardItem = stack;
+        }
+    }
+
+
 }

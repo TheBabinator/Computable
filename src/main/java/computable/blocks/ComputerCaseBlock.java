@@ -67,7 +67,7 @@ public class ComputerCaseBlock extends HorizontalDirectionalBlock implements Com
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof ComputerCaseBlockEntity computerCaseBlockEntity) {
                 serverPlayer.openMenu(new SimpleMenuProvider(
-                        (containerId, playerInventory, player1) -> new ComputerCaseMenu(containerId, playerInventory, computerCaseBlockEntity),
+                        (containerId, playerInventory, player1) -> new ComputerCaseMenu(containerId, playerInventory,((ComputerCaseBlockEntity) blockEntity).itemHandler, computerCaseBlockEntity),
                         getName()
                 ));
             }

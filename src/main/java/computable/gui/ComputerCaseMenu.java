@@ -1,5 +1,6 @@
 package computable.gui;
 
+import computable.content.ComputableItems;
 import computable.content.ComputableMenus;
 import computable.net.ComputableNetworking;
 import computable.tiles.ComputerCaseBlockEntity;
@@ -7,24 +8,32 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class ComputerCaseMenu extends ComputableContainerMenu {
     private final ComputerCaseBlockEntity blockEntity;
     private final DataSlot buttonSlot;
+    private final int slotX = 62;
+    private final int slotY = 35;
 
     public ComputerCaseMenu(int containerId, Inventory inventory) {
-        super(ComputableMenus.COMPUTER_CASE.get(), containerId, 0);
+        super(ComputableMenus.COMPUTER_CASE.get(), containerId, 1);
         blockEntity = null;
 
         buttonSlot = DataSlot.standalone();
         addDataSlot(buttonSlot);
-
+        addSlot(new SlotItemHandler(new ItemStackHandler(), 0, slotX, slotY));
         addPlayerHotbar(inventory, 8, 142);
         addPlayerInventory(inventory, 8, 84);
     }
 
-    public ComputerCaseMenu(int containerId, Inventory inventory, ComputerCaseBlockEntity blockEntity) {
-        super(ComputableMenus.COMPUTER_CASE.get(), containerId, 0);
+    public ComputerCaseMenu(int containerId, Inventory inventory, IItemHandlerModifiable itemHandler, ComputerCaseBlockEntity blockEntity) {
+        super(ComputableMenus.COMPUTER_CASE.get(), containerId, 1);
         this.blockEntity = blockEntity;
 
         buttonSlot = new DataSlot() {
@@ -47,7 +56,7 @@ public class ComputerCaseMenu extends ComputableContainerMenu {
             }
         };
         addDataSlot(buttonSlot);
-
+        addSlot(new SlotItemHandler(itemHandler, 0, slotX, slotY));
         addPlayerHotbar(inventory, 8, 142);
         addPlayerInventory(inventory, 8, 84);
     }
