@@ -92,7 +92,7 @@ public class MotherboardItem extends BundleItem {
 
 
 
-    public ItemHandler createItemHandler(ItemStack itemStack) {
+    public IItemHandlerModifiable createItemHandler(ItemStack itemStack) {
         return new ItemHandler(itemStack);
     }
 
@@ -105,7 +105,7 @@ public class MotherboardItem extends BundleItem {
 
         @Override
         public ItemStack getStackInSlot(int slot) {
-            return Objects.requireNonNull(itemStack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get())).getItemFromSlot(slot);
+            return (Objects.requireNonNull(itemStack.get(ComputableDataComponentTypes.MOTHERBOARD_CONTENTS.get()))).getItemFromSlot(slot);
         }
 
         @Override

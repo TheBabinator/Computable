@@ -5,15 +5,16 @@ import computable.api.Inspectable;
 import computable.api.UpdateRequestable;
 import computable.client.sounds.ComputerSoundInstance;
 import computable.content.ComputableBlockEntityTypes;
+import computable.content.ComputableDataComponentTypes;
 import computable.content.ComputableItems;
 import computable.content.ComputableSoundEvents;
+import computable.items.MotherboardItem;
 import computable.net.ComputableNetworking;
 import computable.net.ComputerCaseUpdate;
 import computable.grid.NetworkMember;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -121,37 +122,51 @@ public class ComputerCaseBlockEntity extends ComputableBlockEntity implements In
     }
 
     public static class ItemHandler implements IItemHandlerModifiable {
-        ItemStack motherboardItem = ItemStack.EMPTY;
+        ItemStack motherboardStack = ItemStack.EMPTY;
 
         @Override
         public int getSlots() {
-            return 1;
+            return 9;
         }
 
         @Override
         public ItemStack getStackInSlot(int slot) {
-            return motherboardItem;
+            if (slot == 9) {
+                return motherboardStack;
+            } else if (motherboardStack.getItem() instanceof MotherboardItem motherboardItem) {
+                IItemHandler motherboardHandler = motherboardItem.createItemHandler(motherboardStack);
+                return motherboardHandler.getStackInSlot(slot);
+            }
+            return ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            if (!simulate) {
-                motherboardItem = stack;
-            }
-            if (motherboardItem.isEmpty()) {
-                return stack;
-            } else {
+            if (slot == 9 && motherboardStack.isEmpty()) {
+                if (!simulate) {
+                    motherboardStack = stack;
+                }
                 return ItemStack.EMPTY;
+            } else if (slot != 9 && motherboardStack.getItem() instanceof MotherboardItem motherboardItem) {
+                IItemHandler motherboardHandler = motherboardItem.createItemHandler(motherboardStack);
+                return motherboardHandler.insertItem(slot, stack, simulate);
             }
+            return stack;
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            ItemStack motherboardCopy = motherboardItem;
-            if (!simulate) {
-                motherboardItem = ItemStack.EMPTY;
+            if (slot == 9 && !motherboardStack.isEmpty()) {
+                ItemStack copiedMotherboardStack = motherboardStack;
+                if (!simulate) {
+                    motherboardStack = ItemStack.EMPTY;
+                }
+                return copiedMotherboardStack;
+            } else if (slot != 9 && motherboardStack.getItem() instanceof MotherboardItem motherboardItem) {
+                IItemHandler motherboardHandler = motherboardItem.createItemHandler(motherboardStack);
+                return motherboardHandler.extractItem(slot, amount, simulate);
             }
-            return motherboardCopy;
+            return ItemStack.EMPTY;
         }
 
         @Override
@@ -161,12 +176,23 @@ public class ComputerCaseBlockEntity extends ComputableBlockEntity implements In
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return stack.is(ComputableItems.MOTHERBOARD);
+            if (slot == 9) {
+                return stack.is(ComputableItems.MOTHERBOARD);
+            } else if (motherboardStack.getItem() instanceof MotherboardItem motherboardItem) {
+                IItemHandler motherboardHandler = motherboardItem.createItemHandler(motherboardStack);
+                return motherboardHandler.isItemValid(slot, stack);
+            }
+            return false;
         }
 
         @Override
         public void setStackInSlot(int slot, ItemStack stack) {
-            motherboardItem = stack;
+            if (slot == 9) {
+                motherboardStack = stack;
+            } else if (motherboardStack.getItem() instanceof MotherboardItem motherboardItem) {
+                IItemHandlerModifiable motherboardHandler = motherboardItem.createItemHandler(motherboardStack);
+                motherboardHandler.setStackInSlot(slot, stack);
+            }
         }
     }
 
