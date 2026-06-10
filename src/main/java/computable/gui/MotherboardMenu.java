@@ -77,6 +77,11 @@ public class MotherboardMenu extends ComputableContainerMenu {
         }
 
         @Override
+        public int getMaxStackSize(ItemStack stack) {
+            return 1;
+        }
+
+        @Override
         public boolean mayPlace(ItemStack stack) {
             Hardware hardwareType = stack.get(ComputableDataComponentTypes.HARDWARE);
             if (hardwareType == hardware) {

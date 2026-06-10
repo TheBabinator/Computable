@@ -1,5 +1,6 @@
 package computable.gui;
 
+import computable.content.ComputableDataComponentTypes;
 import computable.content.ComputableItems;
 import computable.content.ComputableMenus;
 import computable.items.MotherboardItem;
@@ -31,17 +32,21 @@ public class ComputerCaseMenu extends ComputableContainerMenu {
         buttonSlot = DataSlot.standalone();
         addDataSlot(buttonSlot);
         // motherboard
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0, 62, 35));
+        Slot motherboardSlot = addSlot(new ComputerMotherboardStackHandler(new ItemStackHandler(), 0, 62, 35));
         // motherboard proxy
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0, offsetX, offsetY));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX + 18, offsetY));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX + 36, offsetY));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX, offsetY + 18));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX + 18, offsetY + 18));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX + 36, offsetY + 18));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX, offsetY + 36));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX + 18, offsetY + 36));
-        addSlot(new SlotItemHandler(new ItemStackHandler(), 0,  offsetX + 36, offsetY + 36));
+        // row 1
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX, offsetY, Hardware.EEPROM, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX + 18, offsetY, Hardware.CPU, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX + 36, offsetY, Hardware.CARD, motherboardSlot));
+        // row 2
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX, offsetY + 18, Hardware.DRIVE, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX + 18, offsetY + 18, Hardware.MEMORY, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX + 36, offsetY + 18, Hardware.CARD, motherboardSlot));
+        // row 3
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX, offsetY + 36, Hardware.DRIVE, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX + 18, offsetY + 36, Hardware.MEMORY, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(new ItemStackHandler(), 0, offsetX + 36, offsetY + 36, Hardware.CARD, motherboardSlot));
+
 
         addPlayerHotbar(inventory, 8, 142);
         addPlayerInventory(inventory, 8, 84);
@@ -72,20 +77,20 @@ public class ComputerCaseMenu extends ComputableContainerMenu {
         };
         addDataSlot(buttonSlot);
         // motherboard
-        addSlot(new SlotItemHandler(itemHandler, 9, 62, 35));
+        Slot motherboardSlot = addSlot(new ComputerMotherboardStackHandler(itemHandler, 9, 62, 35));
         // motherboard proxy
         // row 1
-        addSlot(new SlotItemHandler(itemHandler, 8, offsetX, offsetY));
-        addSlot(new SlotItemHandler(itemHandler, 0, offsetX + 18, offsetY));
-        addSlot(new SlotItemHandler(itemHandler, 5, offsetX + 36, offsetY));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 8, offsetX, offsetY, Hardware.EEPROM, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 0, offsetX + 18, offsetY, Hardware.CPU, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 5, offsetX + 36, offsetY, Hardware.CARD, motherboardSlot));
         // row 2
-        addSlot(new SlotItemHandler(itemHandler, 3, offsetX, offsetY + 18));
-        addSlot(new SlotItemHandler(itemHandler, 1, offsetX + 18, offsetY + 18));
-        addSlot(new SlotItemHandler(itemHandler, 6, offsetX + 36, offsetY + 18));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 3, offsetX, offsetY + 18, Hardware.DRIVE, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 1, offsetX + 18, offsetY + 18, Hardware.MEMORY, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 6, offsetX + 36, offsetY + 18, Hardware.CARD, motherboardSlot));
         // row 3
-        addSlot(new SlotItemHandler(itemHandler, 4, offsetX, offsetY + 36));
-        addSlot(new SlotItemHandler(itemHandler, 2, offsetX + 18, offsetY + 36));
-        addSlot(new SlotItemHandler(itemHandler, 7, offsetX + 36, offsetY + 36));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 4, offsetX, offsetY + 36, Hardware.DRIVE, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 2, offsetX + 18, offsetY + 36, Hardware.MEMORY, motherboardSlot));
+        addSlot(new ComputerMotherboardProxyStackHandler(itemHandler, 7, offsetX + 36, offsetY + 36, Hardware.CARD, motherboardSlot));
 
         addPlayerHotbar(inventory, 8, 142);
         addPlayerInventory(inventory, 8, 84);
@@ -107,4 +112,38 @@ public class ComputerCaseMenu extends ComputableContainerMenu {
         buttonSlot.set(value ? 1 : 0);
         ComputableNetworking.updateServerMenuDataSlot(0, value ? 1 : 0);
     }
+
+    public static class ComputerMotherboardProxyStackHandler extends MotherboardMenu.MotherboardSlotItemHandler {
+
+        private final Slot motherboardSlot;
+
+        public ComputerMotherboardProxyStackHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition, Hardware hardware, Slot motherboardSlot) {
+            super(itemHandler, index, xPosition, yPosition, hardware);
+            this.motherboardSlot = motherboardSlot;
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.get(ComputableDataComponentTypes.HARDWARE) == hardware && motherboardSlot.hasItem();
+        }
+
+    }
+
+    public static class ComputerMotherboardStackHandler extends SlotItemHandler {
+
+        public ComputerMotherboardStackHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+            super(itemHandler, index, xPosition, yPosition);
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return 1;
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.is(ComputableItems.MOTHERBOARD);
+        }
+    }
+
 }
