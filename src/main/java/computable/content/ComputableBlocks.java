@@ -2,6 +2,7 @@ package computable.content;
 
 import computable.Computable;
 import computable.blocks.ComputerCaseBlock;
+import computable.blocks.ScreenBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -14,6 +15,9 @@ public class ComputableBlocks {
 
     public static final DeferredHolder<Block, Block> COMPUTER_CASE = BLOCKS.register("computer_case",
             () -> new ComputerCaseBlock(BlockBehaviour.Properties.of()));
+
+    public static final DeferredHolder<Block, Block> SCREEN = BLOCKS.register("screen",
+            () -> new ScreenBlock(BlockBehaviour.Properties.of()));
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

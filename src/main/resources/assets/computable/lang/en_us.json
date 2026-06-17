@@ -11,6 +11,7 @@
   "item.computable.basic_drive": "Basic Drive",
   "item.computable.analyzer": "Analyzer",
   "block.computable.computer_case": "Computer Case",
+  "block.computable.screen": "Screen",
   "computable.motherboard.memory": "Memory",
   "computable.motherboard.drives": "Drives",
   "computable.motherboard.eeprom": "EEPROM",
