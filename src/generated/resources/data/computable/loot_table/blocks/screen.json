@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "computable:computer_case"
+          "name": "computable:screen"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "computable:blocks/computer_case"
+  "random_sequence": "computable:blocks/screen"
 }
